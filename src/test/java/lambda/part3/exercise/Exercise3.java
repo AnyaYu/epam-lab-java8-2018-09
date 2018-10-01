@@ -33,9 +33,7 @@ class Exercise3 {
 
         public List<R> force() {
             List<R> newList = new ArrayList<>();
-            for (T t: source) {
-                newList.add(mapping.apply(t));
-            }
+            for (T t: source) newList.add(mapping.apply(t));
             return newList;
         }
 
