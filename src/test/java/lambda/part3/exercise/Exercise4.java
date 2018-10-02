@@ -33,7 +33,7 @@ class Exercise4 {
 
         public <U> LazyCollectionHelper<T, U> flatMap(Function<R, List<U>> flatMapping) {
             return new LazyCollectionHelper<T, U>(source, this.flatMapping.andThen(
-                applyToList(flatMapping)));
+                list -> applyFlatMap(list, flatMapping)));
         }
 
         public <U> LazyCollectionHelper<T, U> map(Function<R, U> mapping) {
@@ -41,16 +41,13 @@ class Exercise4 {
         }
 
         public List<R> force() {
-            return applyToList(flatMapping).apply(source);
+            return applyFlatMap(source, flatMapping);
         }
 
-        public <U, V> Function<List<U>, List<V>> applyToList(Function<U, List<V>> flatMapping) {
-            return
-            (List<U> list) -> {
-                List<V> newList = new ArrayList<>();
-                for(U u: list) newList.addAll(flatMapping.apply(u));
-                return newList;
-            };
+        private static <U, V> List<V> applyFlatMap(List<U> list, Function<U, List<V>> flatMapping) {
+            List<V> newList = new ArrayList<>();
+            for(U u: list) newList.addAll(flatMapping.apply(u));
+            return newList;
         }
     }
 
